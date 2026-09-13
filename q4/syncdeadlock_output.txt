@@ -50,3 +50,20 @@ Processes: 5 Concurrent Workers
 FINAL VERIFICATION: ALL 5 PROCESSES COMPLETED 3 CYCLES!
 No deadlock detected. Resource limits were strictly respected.
 ========================================================
+
+Strategy Used: Resource Ordering (Deadlock Prevention)
+
+For this multi-resource synchronization problem, the Resource Ordering (Hierarchical Allocation) strategy was implemented to prevent deadlocks.
+
+How It Works:
+A strict global order is assigned to all resource types in the system. For example:
+1. Scanner (1 instance)
+2. Printer (2 instances)
+3. Disk (2 instances)
+
+Any process requiring multiple resources must request them strictly in this predefined increasing order. For instance, if a process needs both a Scanner and a Disk, it must acquire the Scanner lock/semaphore first. If it needs a Printer and a Disk, the Printer must be acquired before the Disk.
+
+Why It Prevents Deadlock:
+Deadlocks require four necessary conditions to hold simultaneously, one of which is "Circular Wait." Circular wait occurs when a chain of processes each holds a resource while waiting for a resource held by the next process in the chain.
+
+By enforcing a global acquisition order, a cycle cannot physically form. A process holding a higher-order resource (like a Disk) is restricted from requesting a lower-order resource (like a Scanner) while holding the higher-order one. Because all processes request resources in the same "direction" across the hierarchy, the dependency graph remains acyclic. Consequently, circular wait is fundamentally eliminated, and the system is mathematically guaranteed to remain deadlock-free. This ensures all 5 processes can acquire their 2 needed resources, complete their simulated work, and release the resources across multiple cycles without ever hanging.
